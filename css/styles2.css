@@ -1,0 +1,13 @@
+.background_page {
+    margin: 0;
+    background: linear-gradient(120deg,
+            rgba(50, 18, 122, 1) 10%,
+            rgba(86, 3, 173, 1) 30%,
+            rgba(167, 124, 203, 1) 52%,
+            rgba(255, 240, 245, 1) 77%,
+            rgba(255, 250, 240, 1) 100%);
+}
+
+.color_h1 {
+    color: #F5F5DC;
+}
