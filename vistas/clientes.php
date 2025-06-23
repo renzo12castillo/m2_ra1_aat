@@ -11,7 +11,18 @@
     <link rel="stylesheet" href="../css/styles2.css">
 </head>
 
-<body class="background_page">
+<body class="background_page d-flex flex-column min-vh-100 background_page">
+
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col">
+                <a href="../index.html" class="btn btn-outline-light">
+                    <i class="bi bi-arrow-return-left"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <header class="d-flex justify-content-center align-items-center pt-5">
         <div class="container">
@@ -24,7 +35,7 @@
     </header>
 
 
-    <main class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="d-flex justify-content-center align-items-center flex-fill">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-auto d-flex flex-wrap justify-content-center gap-3">
@@ -76,7 +87,7 @@
 
 
                     <div class="col-12">
-                        <table class="table table-dark table-striped table-responsive square xyz-in" xyz="small-100% origin-top">
+                        <table class="table table-dark table-striped table-responsive">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -121,15 +132,11 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
     </main>
 
-    <!-- MODIFICAR HASTA ACA -->
-
-    </div>
-    </div>
-    </div>
-    </main>
-    <footer></footer>
+    <footer class="footer mt-auto py-3 footer_wave"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"

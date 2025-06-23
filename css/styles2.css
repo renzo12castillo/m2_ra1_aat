@@ -1,13 +1,72 @@
-.background_page {
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
+}
+
+.background_page {
+    min-height: 100vh; 
+    margin: 0;
+    background: linear-gradient(120deg,
+        rgba(50, 18, 122, 1) 10%,
+        rgba(86, 3, 173, 1) 30%,
+        rgba(167, 124, 203, 1) 52%,
+        rgba(255, 240, 245, 1) 77%,
+        rgba(255, 250, 240, 1) 100%);
+    background-attachment: fixed;
+    background-size: cover;       
+    background-repeat: no-repeat;
+}
+
+
+.color_h1 {
+    color: #F5F5DC;
+}
+
+.color_text_line {
+    color: rgba(255, 240, 245, 1) !important;
+}
+
+.table_margin {
+    margin-top: 0 !important;
+}
+
+.footer_wave {
+    position: relative;
     background: linear-gradient(120deg,
             rgba(50, 18, 122, 1) 10%,
             rgba(86, 3, 173, 1) 30%,
             rgba(167, 124, 203, 1) 52%,
             rgba(255, 240, 245, 1) 77%,
             rgba(255, 250, 240, 1) 100%);
+    padding: 20px;
+    height: 75px;
 }
 
-.color_h1 {
-    color: #F5F5DC;
+.footer_wave::after {
+    content: "Pagina en construccion!";
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(255, 240, 245, 1);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: flame 10s linear infinite;
+}
+
+@keyframes flame {
+    0% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-30%) scale(1.2);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
 }
