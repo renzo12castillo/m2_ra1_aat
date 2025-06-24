@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
+    <title>Paises</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -28,7 +28,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-auto d-flex flex-wrap justify-content-center gap-3">
-                    <h1 class="color_h1">Clientes</h1>
+                    <h1 class="color_h1">Paises</h1>
                 </div>
             </div>
         </div>
@@ -53,30 +53,16 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="../procesos_crud/clientes_crud.php" method="post">
-                                        <label for="txt_id" class="form-label">ID</label>
-                                        <input type="number" name="txt_id" id="txt_id" class="form-control">
+                                    <form action="../procesos_crud/paises_crud.php" method="post">
+                                        <label for="txt_id_pais" class="form-label">Pais ID</label>
+                                        <input type="number" name="txt_id_pais" id="txt_id_pais" class="form-control">
 
-                                        <label for="txt_nombre" class="form-label">Nombre</label>
-                                        <input type="text" name="txt_nombre" id="txt_nombre" class="form-control">
+                                        <label for="txt_nombre_pais" class="form-label">Nombre</label>
+                                        <input type="text" name="txt_nombre_pais" id="txt_nombre_pais" class="form-control">
 
-                                        <label for="txt_apellido" class="form-label">Apellido</label>
-                                        <input type="text" name="txt_apellido" id="txt_apellido" class="form-control">
-
-                                        <label for="date_fecha_de_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                                        <input type="date" name="date_fecha_de_nacimiento" id="date_fecha_de_nacimiento" class="form-control">
-
-                                        <label for="date_fecha_suscripcion" class="form-label">Fecha de Suscripcion</label>
-                                        <input type="date" name="date_fecha_suscripcion" id="date_fecha_suscripcion" class="form-control">
-
-                                        <label for="email_correo_electronico" class="form-label">Correo Electronico</label>
-                                        <input type="email" name="email_correo_electronico" id="email_correo_electronico" class="form-control">
-
-                                        <label for="tel_movil" class="form-label">Telefono Movil</label>
-                                        <input type="tel" name="tel_movil" id="tel_movil" class="form-control">
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary" name="btn_agregar_cliente" id="btn_agregar_cliente">Agregar Cliente</button>
+                                            <button type="submit" class="btn btn-primary" name="btn_agregar_pais" id="btn_agregar_pais">Agregar Pais</button>
                                         </div>
                                     </form>
                                 </div>
@@ -91,38 +77,28 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Fecha de Nacimiento</th>
-                                    <th>Fecha de Suscripcion</th>
-                                    <th>Correo Electronico</th>
-                                    <th>Telefono Movil</th>
+                                    <th>Nombre del Pais</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 require_once("../procesos_crud/conexion.php");
-                                require_once("../procesos_crud/clientes_crud.php");
-                                $sql = "SELECT * FROM clientes";
+                                require_once("../procesos_crud/paises_crud.php");
+                                $sql = "SELECT * FROM paises";
                                 $ejecutar = mysqli_query($conexion, $sql);
 
                                 while ($resultado = mysqli_fetch_assoc($ejecutar)) { ?>
                                     <tr>
-                                        <th scope="row"><?= $resultado['cliente_id']; ?></th>
+                                        <th scope="row"><?= $resultado['pais_id']; ?></th>
                                         <td><?= $resultado['nombre']; ?></td>
-                                        <td><?= $resultado['apellido']; ?></td>
-                                        <td><?= $resultado['fecha_nacimiento']; ?></td>
-                                        <td><?= $resultado['fecha_suscripcion']; ?></td>
-                                        <td><?= $resultado['correo_electronico']; ?></td>
-                                        <td><?= $resultado['telefono_movil']; ?></td>
                                         <td>
                                             <form action="../forms/form_clientes.php" method="post" style="display:inline;">
-                                                <input type="hidden" name="txt_editar_cliente" value="<?= $resultado['cliente_id']; ?>">
-                                                <button type="submit" name="btn_editar_cliente" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
+                                                <input type="hidden" name="txt_editar_pais" value="<?= $resultado['pais_id']; ?>">
+                                                <button type="submit" name="btn_editar_pais" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                                             </form>
                                             <form action="clientes.php" method="post" style="display:inline;">
-                                                <input type="hidden" name="txt_eliminar_cliente" id="txt_eliminar_cliente" value="<?= $resultado['cliente_id']; ?>">
+                                                <input type="hidden" name="txt_eliminar_pais" id="txt_eliminar_pais" value="<?= $resultado['pais_id']; ?>">
                                                 <button type="submit" class="btn btn-danger" name="btn_eliminar" id="btn_eliminar"><i class="bi bi-trash3-fill"></i></button>
                                             </form>
                                         </td>

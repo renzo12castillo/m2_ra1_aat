@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
+    <title>Directores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -28,7 +28,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-auto d-flex flex-wrap justify-content-center gap-3">
-                    <h1 class="color_h1">Clientes</h1>
+                    <h1 class="color_h1">Directores</h1>
                 </div>
             </div>
         </div>
@@ -49,34 +49,26 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Clientes</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Directores</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="../procesos_crud/clientes_crud.php" method="post">
-                                        <label for="txt_id" class="form-label">ID</label>
-                                        <input type="number" name="txt_id" id="txt_id" class="form-control">
+                                    <form action="../procesos_crud/directores_crud.php" method="post">
+                                        <label for="txt_id_director_add" class="form-label">ID Director</label>
+                                        <input type="number" name="txt_id_director_add" id="txt_id_director_add" class="form-control">
 
-                                        <label for="txt_nombre" class="form-label">Nombre</label>
-                                        <input type="text" name="txt_nombre" id="txt_nombre" class="form-control">
+                                        <label for="txt_nombre_add" class="form-label">Nombre</label>
+                                        <input type="text" name="txt_nombre_add" id="txt_nombre_add" class="form-control">
 
-                                        <label for="txt_apellido" class="form-label">Apellido</label>
-                                        <input type="text" name="txt_apellido" id="txt_apellido" class="form-control">
+                                        <label for="txt_apellido_add" class="form-label">Apellido</label>
+                                        <input type="text" name="txt_apellido_add" id="txt_apellido_add" class="form-control">
 
-                                        <label for="date_fecha_de_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                                        <input type="date" name="date_fecha_de_nacimiento" id="date_fecha_de_nacimiento" class="form-control">
+                                        <label for="number_pais_id_add" class="form-label">Pais ID</label>
+                                        <input type="number" name="number_pais_id_add" id="number_pais_id_add" class="form-control">
 
-                                        <label for="date_fecha_suscripcion" class="form-label">Fecha de Suscripcion</label>
-                                        <input type="date" name="date_fecha_suscripcion" id="date_fecha_suscripcion" class="form-control">
-
-                                        <label for="email_correo_electronico" class="form-label">Correo Electronico</label>
-                                        <input type="email" name="email_correo_electronico" id="email_correo_electronico" class="form-control">
-
-                                        <label for="tel_movil" class="form-label">Telefono Movil</label>
-                                        <input type="tel" name="tel_movil" id="tel_movil" class="form-control">
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary" name="btn_agregar_cliente" id="btn_agregar_cliente">Agregar Cliente</button>
+                                            <button type="submit" class="btn btn-primary" name="btn_agregar_director" id="btn_agregar_director">Agregar Director</button>
                                         </div>
                                     </form>
                                 </div>
@@ -90,40 +82,34 @@
                         <table class="table table-dark table-striped table-responsive">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>ID Director</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
-                                    <th>Fecha de Nacimiento</th>
-                                    <th>Fecha de Suscripcion</th>
-                                    <th>Correo Electronico</th>
-                                    <th>Telefono Movil</th>
+                                    <th>Pais ID</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 require_once("../procesos_crud/conexion.php");
-                                require_once("../procesos_crud/clientes_crud.php");
-                                $sql = "SELECT * FROM clientes";
+                                require_once("../procesos_crud/directores_crud.php");
+                                $sql = "SELECT * FROM directores";
                                 $ejecutar = mysqli_query($conexion, $sql);
 
                                 while ($resultado = mysqli_fetch_assoc($ejecutar)) { ?>
                                     <tr>
-                                        <th scope="row"><?= $resultado['cliente_id']; ?></th>
+                                        <th scope="row"><?= $resultado['director_id']; ?></th>
                                         <td><?= $resultado['nombre']; ?></td>
                                         <td><?= $resultado['apellido']; ?></td>
-                                        <td><?= $resultado['fecha_nacimiento']; ?></td>
-                                        <td><?= $resultado['fecha_suscripcion']; ?></td>
-                                        <td><?= $resultado['correo_electronico']; ?></td>
-                                        <td><?= $resultado['telefono_movil']; ?></td>
+                                        <td><?= $resultado['pais_id']; ?></td>
                                         <td>
-                                            <form action="../forms/form_clientes.php" method="post" style="display:inline;">
-                                                <input type="hidden" name="txt_editar_cliente" value="<?= $resultado['cliente_id']; ?>">
-                                                <button type="submit" name="btn_editar_cliente" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
+                                            <form action="../forms/form_directores.php" method="post" style="display:inline;">
+                                                <input type="hidden" name="txt_editar_director" value="<?= $resultado['director_id']; ?>">
+                                                <button type="submit" name="btn_editar_director" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                                             </form>
-                                            <form action="clientes.php" method="post" style="display:inline;">
-                                                <input type="hidden" name="txt_eliminar_cliente" id="txt_eliminar_cliente" value="<?= $resultado['cliente_id']; ?>">
-                                                <button type="submit" class="btn btn-danger" name="btn_eliminar" id="btn_eliminar"><i class="bi bi-trash3-fill"></i></button>
+                                            <form action="directores.php" method="post" style="display:inline;">
+                                                <input type="hidden" name="txt_eliminar_director" id="txt_eliminar_director" value="<?= $resultado['director_id']; ?>">
+                                                <button type="submit" class="btn btn-danger" name="btn_eliminar_director" id="btn_eliminar_director"><i class="bi bi-trash3-fill"></i></button>
                                             </form>
                                         </td>
                                     </tr>
