@@ -27,7 +27,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
     <div class="container">
         <div class="row mt-5">
             <div class="col">
-                <a href="../vistas/clientes.php" class="btn btn-outline-light">
+                <a href="../vistas/paises.php" class="btn btn-outline-light">
                     <i class="bi bi-arrow-return-left"></i>
                 </a>
             </div>
@@ -49,7 +49,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="../procesos_crud/clientes_crud.php" method="post">
+                    <form action="../procesos_crud/paises_crud.php" method="post">
                         <label for="txt_id_pais_form" class="form-label color_text_line m-2">ID Pais</label>
                         <input type="number" name="txt_id_pais_form" id="txt_id_pais_form" class="form-control" readonly value="<?= $codigo; ?>">
 
@@ -65,7 +65,9 @@ $resultado = mysqli_fetch_assoc($ejecutar);
 
     <!-- MODIFICAR HASTA ACA -->
 
-    <footer class="footer mt-auto py-3 footer_wave"></footer>
+    <div class="d-flex flex-column min-vh-100">
+        <footer class="footer mt-auto py-3 footer_wave"></footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"

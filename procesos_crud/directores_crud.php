@@ -24,10 +24,11 @@ if (isset($_POST['guardar_cambios'])) {
     $idPais = $_POST['txt_id_pais'];
 
     $sql = "UPDATE directores SET 
+                director_id = '$idDirector',
                 nombre = '$nombre', 
                 apellido = '$apellido', 
-                pais_id = '$idPais', 
-            WHERE director_id = $id";
+                pais_id = '$idPais' 
+            WHERE director_id = $idDirector";
 
     echo $sql;
 

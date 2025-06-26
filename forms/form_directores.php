@@ -26,7 +26,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
     <div class="container">
         <div class="row mt-5">
             <div class="col">
-                <a href="../vistas/clientes.php" class="btn btn-outline-light">
+                <a href="../vistas/directores.php" class="btn btn-outline-light">
                     <i class="bi bi-arrow-return-left"></i>
                 </a>
             </div>
@@ -48,7 +48,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="../procesos_crud/directores.php" method="post">
+                    <form action="../procesos_crud/directores_crud.php" method="post">
                         <label for="txt_id_director" class="form-label color_text_line m-2">ID Director</label>
                         <input type="number" name="txt_id_director" id="txt_id_director" class="form-control" readonly value="<?= $codigo; ?>">
 

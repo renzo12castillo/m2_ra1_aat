@@ -2,14 +2,14 @@
 
     require_once("conexion.php");
 
-    if (isset($_POST['btn_eliminar'])) {
-    $id = $_POST['txt_eliminar_cliente'];
-    $sql = "delete from clientes where cliente_id=" . $id;
+    if (isset($_POST['btn_eliminar_pais'])) {
+    $id = $_POST['txt_eliminar_pais'];
+    $sql = "delete from paises where pais_id=" . $id;
 
     try {
         $ejecutar = mysqli_query($conexion, $sql);
         echo "Registro eliminado con exito";
-        echo "<br><a href ='../vistas/clientes.php'>Regresar</a>";
+        echo "<br><a href ='../vistas/paises.php'>Regresar</a>";
     } catch (Exception $th) {
         echo "Error al eliminar el registro" . $th;
     }
@@ -18,22 +18,12 @@
 //EN ESTA PARTE SE AGREGA LA OPCION PARA EDITAR LA INFORMACION DE LOS CLIENTES//
 
 if (isset($_POST['guardar_cambios'])) {
-    $id = $_POST['txt_id'];
-    $nombre = $_POST['txt_nombre'];
-    $apellido = $_POST['txt_apellido'];
-    $fechaNacimiento = $_POST['date_fecha_de_nacimiento'];
-    $fechaSuscripcion = $_POST['date_fecha_de_suscripcion'];
-    $correoElectronico = $_POST['email_correo_electronico'];
-    $telefonoMovil = $_POST['tel_telefono_movil'];
-
-    $sql = "UPDATE clientes SET 
-                nombre = '$nombre', 
-                apellido = '$apellido', 
-                fecha_nacimiento = '$fechaNacimiento', 
-                fecha_suscripcion = '$fechaSuscripcion', 
-                correo_electronico = '$correoElectronico',
-                telefono_movil = '$telefonoMovil'
-            WHERE cliente_id = $id";
+    $idPais = $_POST['txt_id_pais_form'];
+    $nombre = $_POST['txt_nombre_pais_form'];
+    $sql = "UPDATE paises SET 
+                pais_id = '$idPais', 
+                nombre = '$nombre'
+            WHERE pais_id = $idPais";
 
     echo $sql;
 
@@ -41,7 +31,7 @@ if (isset($_POST['guardar_cambios'])) {
         $ejecutar = mysqli_query($conexion, $sql);
         if ($ejecutar) {
             echo "<br>Datos Modificados con Éxito!";
-            echo "<br><a href ='../vistas/clientes.php'>Regresar</a>";
+            echo "<br><a href ='../vistas/paises.php'>Regresar</a>";
         } else {
             echo "<br>Error en la consulta: " . mysqli_error($conexion);
         }

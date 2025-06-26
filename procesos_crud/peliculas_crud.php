@@ -28,7 +28,7 @@ if (isset($_POST['guardar_cambios_peliculas'])) {
                 nombre = '$nombre', 
                 fecha_estreno = '$fechaEstreno', 
                 duracion_minutos = '$duracion', 
-                director_id = '$idDirector', 
+                director_id = '$idDirector' 
             WHERE pelicula_id = $id";
 
     echo $sql;

@@ -1,6 +1,6 @@
 <?php
 
-$codigo = $_POST['btn_editar_pelicula'];
+$codigo = $_POST['txt_editar_pelicula'];
 
 require_once("../procesos_crud/conexion.php");
 $sql = "select * from peliculas where pelicula_id=" . $codigo;
@@ -27,7 +27,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
     <div class="container">
         <div class="row mt-5">
             <div class="col">
-                <a href="../vistas/clientes.php" class="btn btn-outline-light">
+                <a href="../vistas/peliculas.php" class="btn btn-outline-light">
                     <i class="bi bi-arrow-return-left"></i>
                 </a>
             </div>
@@ -49,7 +49,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="../procesos_crud/clientes_crud.php" method="post">
+                    <form action="../procesos_crud/peliculas_crud.php" method="post">
                         <label for="txt_id_pelicula_form" class="form-label color_text_line m-2">Pelicula ID</label>
                         <input type="number" name="txt_id_pelicula_form" id="txt_id_pelicula_form" class="form-control" readonly value="<?= $codigo; ?>">
 
@@ -63,7 +63,7 @@ $resultado = mysqli_fetch_assoc($ejecutar);
                         <input type="number" name="number_duracion_min_form" id="number_duracion_min_form" class="form-control" value="<?= $resultado['duracion_minutos']; ?>">
 
                         <label for="txt_id_director_form" class="form-label color_text_line m-2">ID Director</label>
-                        <input type="number" name="txt_id_director_form" id="txt_id_director_form" class="form-control" value="<?= $resultado['director_id']; ?>">
+                        <input type="number" name="txt_id_director_form" id="txt_id_director_form" class="form-control" readonly value="<?= $resultado['director_id']; ?>">
 
                         <button class="btn btn-outline-light btn-lg mt-5" type="submit" name="guardar_cambios_peliculas" id="guardar_cambios_peliculas">Guardar Cambios</button>
                     </form>
