@@ -1,22 +1,28 @@
 <?php
+ob_start(); 
+require_once("conexion.php");
 
-    require_once("conexion.php");
 
-    if (isset($_POST['btn_eliminar_pelicula'])) {
-    $id = $_POST['txt_eliminar_pelicula'];
-    $sql = "delete from peliculas where pelicula_id=" . $id;
+if (isset($_POST['btn_eliminar_pelicula'])) {
+    $id = intval($_POST['txt_eliminar_pelicula']);
+    $sql = "DELETE FROM peliculas WHERE pelicula_id = $id";
 
     try {
         $ejecutar = mysqli_query($conexion, $sql);
-        echo "Registro eliminado con exito";
-        echo "<br><a href ='../vistas/peliculas.php'>Regresar</a>";
-    } catch (Exception $th) {
-        echo "Error al eliminar el registro" . $th;
+        if ($ejecutar) {
+            header('Location: ../vistas/peliculas.php?eliminacion=exitosa');
+            exit;
+        } else {
+            header('Location: ../vistas/peliculas.php?eliminacion=fallida');
+            exit;
+        }
+    } catch (Exception $e) {
+        header('Location: ../vistas/peliculas.php?eliminacion=fallida');
+        exit;
     }
 }
 
-//EN ESTA PARTE SE AGREGA LA OPCION PARA EDITAR LA INFORMACION DE LOS CLIENTES//
-
+// === EDITAR PELÍCULA ===
 if (isset($_POST['guardar_cambios_peliculas'])) {
     $id = $_POST['txt_id_pelicula_form'];
     $nombre = $_POST['txt_nombre_pelicula_form'];
@@ -31,24 +37,23 @@ if (isset($_POST['guardar_cambios_peliculas'])) {
                 director_id = '$idDirector' 
             WHERE pelicula_id = $id";
 
-    echo $sql;
-
     try {
         $ejecutar = mysqli_query($conexion, $sql);
         if ($ejecutar) {
-            echo "<br>Datos Modificados con Éxito!";
-            echo "<br><a href ='../vistas/peliculas.php'>Regresar</a>";
+            // Redirigir con éxito de edición
+            header('Location: ../vistas/peliculas.php?edicion=exitosa');
+            exit;
         } else {
-            echo "<br>Error en la consulta: " . mysqli_error($conexion);
+            header('Location: ../vistas/peliculas.php?edicion=fallida');
+            exit;
         }
     } catch (Exception $e) {
-        echo "No se puede modificar: " . $e;
+        header('Location: ../vistas/peliculas.php?edicion=fallida');
+        exit;
     }
 }
 
-
-//ACA SE AGREGARA EL PROCESO DE INSERCION DE NUEVOS CLIENTES// 
-
+// === AGREGAR PELÍCULA ===
 if (isset($_POST['btn_agregar_pelicula'])) {
     $id = $_POST['txt_id_pelicula'];
     $nombre = $_POST['txt_nombre_pelicula'];
@@ -56,27 +61,23 @@ if (isset($_POST['btn_agregar_pelicula'])) {
     $duracion = $_POST['number_duracion_minutos'];
     $idDirector = $_POST['txt_director_id'];
 
-    echo "<br>Datos de la pelicula: ";
-    echo "<br>ID:" . $id;
-    echo "<br>Nombre:" . $nombre;
-    echo "<br>Fecha de Estreno:" . $fechaEstreno;
-    echo "<br>Duracion en Minutos:" . $duracion;
-    echo "<br>ID del Director:" . $idDirector;
-
-    $sql = "insert into peliculas (pelicula_id, nombre, fecha_estreno, duracion_minutos, director_id) 
-            values ('$id', '$nombre', '$fechaEstreno', '$duracion', '$idDirector'
-);";
-
+    $sql = "INSERT INTO peliculas (pelicula_id, nombre, fecha_estreno, duracion_minutos, director_id) 
+            VALUES ('$id', '$nombre', '$fechaEstreno', '$duracion', '$idDirector')";
 
     try {
         $ejecutar = mysqli_query($conexion, $sql);
-        echo "<br>Los datos fueron almacenados con exito";
-        header('Location: ../vistas/peliculas.php');
+        if ($ejecutar) {
+            header('Location: ../vistas/peliculas.php?registro=exito');
+            exit;
+        } else {
+            header('Location: ../vistas/peliculas.php?registro=error');
+            exit;
+        }
+    } catch (Exception $e) {
+        header('Location: ../vistas/peliculas.php?registro=error');
         exit;
-    } catch (Exception $th) {
-        echo "<br>Datos no fueron guardados, intente nuevamente<br>" . $th;
     }
 }
 
-
+ob_end_flush(); // Liberar el buffer
 ?>
