@@ -1,8 +1,11 @@
 <?php
-ob_start(); 
+ob_start();
 require_once("conexion.php");
 
+$mensaje = null;
+$codigo = null;
 
+// === ELIMINAR PELÍCULA ===
 if (isset($_POST['btn_eliminar_pelicula'])) {
     $id = intval($_POST['txt_eliminar_pelicula']);
     $sql = "DELETE FROM peliculas WHERE pelicula_id = $id";
@@ -24,7 +27,7 @@ if (isset($_POST['btn_eliminar_pelicula'])) {
 
 // === EDITAR PELÍCULA ===
 if (isset($_POST['guardar_cambios_peliculas'])) {
-    $id = $_POST['txt_id_pelicula_form'];
+    $codigo = intval($_POST['txt_id_pelicula_form']); // Guardamos el ID
     $nombre = $_POST['txt_nombre_pelicula_form'];
     $fechaEstreno = $_POST['date_fecha_estreno_form'];
     $duracion = $_POST['number_duracion_min_form'];
@@ -35,23 +38,26 @@ if (isset($_POST['guardar_cambios_peliculas'])) {
                 fecha_estreno = '$fechaEstreno', 
                 duracion_minutos = '$duracion', 
                 director_id = '$idDirector' 
-            WHERE pelicula_id = $id";
+            WHERE pelicula_id = $codigo";
 
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        if ($ejecutar) {
-            // Redirigir con éxito de edición
-            header('Location: ../vistas/peliculas.php?edicion=exitosa');
-            exit;
-        } else {
-            header('Location: ../vistas/peliculas.php?edicion=fallida');
-            exit;
-        }
-    } catch (Exception $e) {
-        header('Location: ../vistas/peliculas.php?edicion=fallida');
-        exit;
-    }
+    $ejecutar = mysqli_query($conexion, $sql);
+    $mensaje = $ejecutar ? "exito" : "error";
 }
+
+// === IDENTIFICAR PELÍCULA PARA FORMULARIO DE EDICIÓN ===
+if (isset($_POST['txt_editar_pelicula'])) {
+    $codigo = intval($_POST['txt_editar_pelicula']);
+}
+
+// === VALIDAR QUE EXISTA EL ID PARA CONSULTAR ===
+if (!$codigo) {
+    die("No se proporcionó ID de película.");
+}
+
+// === OBTENER DATOS DE LA PELÍCULA A EDITAR ===
+$sql = "SELECT * FROM peliculas WHERE pelicula_id = $codigo";
+$ejecutar = mysqli_query($conexion, $sql);
+$resultado = mysqli_fetch_assoc($ejecutar);
 
 // === AGREGAR PELÍCULA ===
 if (isset($_POST['btn_agregar_pelicula'])) {
@@ -79,5 +85,5 @@ if (isset($_POST['btn_agregar_pelicula'])) {
     }
 }
 
-ob_end_flush(); // Liberar el buffer
+ob_end_flush();
 ?>
