@@ -1,86 +1,117 @@
 <?php
+ob_start();
+require_once("conexion.php");
 
-    require_once("conexion.php");
+$mensaje = null;
+$codigo = null;
 
-    if (isset($_POST['btn_eliminar_suscripcion'])) {
-    $id = $_POST['txt_eliminar_suscripcion'];
-    $sql = "delete from suscripciones where suscripcion_id=" . $id;
+// === ELIMINAR SUSCRIPCIÓN ===
+if (isset($_POST['btn_eliminar_suscripcion'])) {
+    $id = intval($_POST['txt_eliminar_suscripcion']);
 
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        echo "Registro eliminado con exito";
-        echo "<br><a href ='../vistas/suscripciones.php'>Regresar</a>";
-    } catch (Exception $th) {
-        echo "Error al eliminar el registro" . $th;
-    }
-}
+    if ($id > 0) {
+        $sql = "DELETE FROM suscripciones WHERE suscripcion_id = $id";
 
-//EN ESTA PARTE SE AGREGA LA OPCION PARA EDITAR LA INFORMACION DE LOS CLIENTES//
-
-if (isset($_POST['guardar_cambios'])) {
-    $idSuscripcion = $_POST['txt_id_suscripcion_form'];
-    $idCliente = $_POST['txt_id_cliente_form'];
-    $idPelicula = $_POST['txt_id_pelicula_form'];
-    $fechaSuscripcion = $_POST['date_fecha_de_suscripcion_form'];
-    $fechaFinalizacion = $_POST['date_fecha_de_finalizacion_form'];
-    $precio = $_POST['number_precio_form'];
-
-    $sql = "UPDATE suscripciones SET 
-                cliente_id = '$idCliente', 
-                pelicula_id = '$idPelicula', 
-                fecha_suscripcion = '$fechaSuscripcion', 
-                fecha_finalizacion = '$fechaFinalizacion', 
-                precio = '$precio'
-            WHERE suscripcion_id = $idSuscripcion";
-
-    echo $sql;
-
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        if ($ejecutar) {
-            echo "<br>Datos Modificados con Éxito!";
-            echo "<br><a href ='../vistas/suscripciones.php'>Regresar</a>";
-        } else {
-            echo "<br>Error en la consulta: " . mysqli_error($conexion);
+        try {
+            $ejecutar = mysqli_query($conexion, $sql);
+            if ($ejecutar) {
+                header("Location: ../vistas/suscripciones.php?eliminacion=exitosa");
+                exit;
+            } else {
+                header("Location: ../vistas/suscripciones.php?eliminacion=fallida");
+                exit;
+            }
+        } catch (Exception $e) {
+            header("Location: ../vistas/suscripciones.php?eliminacion=fallida");
+            exit;
         }
-    } catch (Exception $e) {
-        echo "No se puede modificar: " . $e;
-    }
-}
-
-
-//ACA SE AGREGARA EL PROCESO DE INSERCION DE NUEVOS CLIENTES// 
-
-if (isset($_POST['btn_agregar_suscripcion'])) {
-    $idSuscripcion = $_POST['txt_id_suscripcion_add'];
-    $idCliente = $_POST['txt_id_cliente_add'];
-    $idPelicula = $_POST['txt_id_pelicula_add'];
-    $fechaSuscripcion = $_POST['date_fecha_de_suscripcion'];
-    $fechaFinalizacion = $_POST['date_fecha_finalizacion_add'];
-    $precio = $_POST['number_precio_add'];
-
-    echo "Datos de la suscripcion: ";
-    echo "<br>ID Suscripcion:" . $idSuscripcion;
-    echo "<br>ID Cliente:" . $idCliente;
-    echo "<br>ID Pelicula:" . $idPelicula;
-    echo "<br>Fecha de Suscripcion:" . $fechaSuscripcion;
-    echo "<br>Fecha de Finalizacion:" . $fechaFinalizacion;
-    echo "<br>Precio:" . $precio;
-
-    $sql = "insert into suscripciones (suscripcion_id, cliente_id, pelicula_id, fecha_suscripcion, fecha_finalizacion, precio) 
-            values ('$idSuscripcion', '$idCliente', '$idPelicula', '$fechaSuscripcion', '$fechaFinalizacion', '$precio'
-);";
-
-
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        echo "<br>Los datos fueron almacenados con exito";
-        header('Location: ../vistas/suscripciones.php');
+    } else {
+        header("Location: ../vistas/suscripciones.php?eliminacion=fallida");
         exit;
-    } catch (Exception $th) {
-        echo "<br>Datos no fueron guardados, intente nuevamente<br>" . $th;
     }
 }
 
+// === EDITAR SUSCRIPCIÓN ===
+if (isset($_POST['guardar_cambios'])) {
+    $idSuscripcion = intval($_POST['txt_id_suscripcion_form']);
+    $idCliente = intval($_POST['txt_id_cliente_form']);
+    $idPelicula = intval($_POST['txt_id_pelicula_form']);
+    $fechaSuscripcion = trim($_POST['date_fecha_de_suscripcion_form']);
+    $fechaFinalizacion = trim($_POST['date_fecha_de_finalizacion_form']);
+    $precio = floatval($_POST['number_precio_form']);
 
+    if ($idSuscripcion > 0 && $idCliente > 0 && $idPelicula > 0 && $fechaSuscripcion !== '' && $fechaFinalizacion !== '' && $precio >= 0) {
+        $sql = "UPDATE suscripciones SET 
+                    cliente_id = $idCliente, 
+                    pelicula_id = $idPelicula, 
+                    fecha_suscripcion = '$fechaSuscripcion', 
+                    fecha_finalizacion = '$fechaFinalizacion', 
+                    precio = $precio
+                WHERE suscripcion_id = $idSuscripcion";
+
+        try {
+            $ejecutar = mysqli_query($conexion, $sql);
+            if ($ejecutar) {
+                header("Location: ../vistas/suscripciones.php?edicion=exitosa");
+                exit;
+            } else {
+                header("Location: ../vistas/suscripciones.php?edicion=fallida");
+                exit;
+            }
+        } catch (Exception $e) {
+            header("Location: ../vistas/suscripciones.php?edicion=fallida");
+            exit;
+        }
+    } else {
+        header("Location: ../vistas/suscripciones.php?edicion=fallida");
+        exit;
+    }
+}
+
+// === AGREGAR NUEVA SUSCRIPCIÓN ===
+if (isset($_POST['btn_agregar_suscripcion'])) {
+    $idSuscripcion = intval($_POST['txt_id_suscripcion_add']);
+    $idCliente = intval($_POST['txt_id_cliente_add']);
+    $idPelicula = intval($_POST['txt_id_pelicula_add']);
+    $fechaSuscripcion = trim($_POST['date_fecha_de_suscripcion']);
+    $fechaFinalizacion = trim($_POST['date_fecha_finalizacion_add']);
+    $precio = floatval($_POST['number_precio_add']);
+
+    if ($idSuscripcion > 0 && $idCliente > 0 && $idPelicula > 0 && $fechaSuscripcion !== '' && $fechaFinalizacion !== '' && $precio >= 0) {
+        $sql = "INSERT INTO suscripciones (suscripcion_id, cliente_id, pelicula_id, fecha_suscripcion, fecha_finalizacion, precio) 
+                VALUES ($idSuscripcion, $idCliente, $idPelicula, '$fechaSuscripcion', '$fechaFinalizacion', $precio)";
+
+        try {
+            $ejecutar = mysqli_query($conexion, $sql);
+            if ($ejecutar) {
+                header("Location: ../vistas/suscripciones.php?registro=exito");
+                exit;
+            } else {
+                header("Location: ../vistas/suscripciones.php?registro=error");
+                exit;
+            }
+        } catch (Exception $e) {
+            header("Location: ../vistas/suscripciones.php?registro=error");
+            exit;
+        }
+    } else {
+        header("Location: ../vistas/suscripciones.php?registro=error");
+        exit;
+    }
+}
+ob_end_flush();
 ?>
+
+<?php if ($mensaje): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: "<?= $mensaje === 'exito' ? '¡Éxito!' : 'Error' ?>",
+    text: "<?= $mensaje === 'exito' ? 'La suscripcion fue guardada correctamente.' : 'No se pudo guardar la suscripcion.' ?>",
+    icon: "<?= $mensaje === 'exito' ? 'success' : 'error' ?>",
+    confirmButtonText: "Aceptar"
+}).then(() => {
+    window.location.href = "../vistas/suscripciones.php";
+});
+</script>
+<?php endif; ?>

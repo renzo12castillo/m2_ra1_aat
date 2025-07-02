@@ -9,6 +9,7 @@
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/styles2.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100 background_page">
@@ -103,7 +104,6 @@
                             <tbody>
                                 <?php
                                 require_once("../procesos_crud/conexion.php");
-                                require_once("../procesos_crud/clientes_crud.php");
                                 $sql = "SELECT * FROM clientes";
                                 $ejecutar = mysqli_query($conexion, $sql);
 
@@ -121,7 +121,7 @@
                                                 <input type="hidden" name="txt_editar_cliente" value="<?= $resultado['cliente_id']; ?>">
                                                 <button type="submit" name="btn_editar_cliente" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                                             </form>
-                                            <form action="clientes.php" method="post" style="display:inline;">
+                                            <form action="../procesos_crud/clientes_crud.php" method="post" style="display:inline;">
                                                 <input type="hidden" name="txt_eliminar_cliente" id="txt_eliminar_cliente" value="<?= $resultado['cliente_id']; ?>">
                                                 <button type="submit" class="btn btn-danger" name="btn_eliminar" id="btn_eliminar"><i class="bi bi-trash3-fill"></i></button>
                                             </form>
@@ -141,6 +141,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+    <script src="../js/alerta_clientes.js"></script>
+
+
+    <?php if (isset($_GET['registro']) || isset($_GET['eliminacion']) || isset($_GET['edicion'])): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        <?php
+        if (isset($_GET['registro'])) {
+            $icon = $_GET['registro'] === 'exito' ? 'success' : 'error';
+            $title = $_GET['registro'] === 'exito' ? 'Cliente agregado' : 'Error al agregar';
+            $text = $_GET['registro'] === 'exito' ? 'El cliente fue registrado correctamente.' : 'Ocurrió un error al guardar el cliente.';
+        } elseif (isset($_GET['edicion'])) {
+            $icon = $_GET['edicion'] === 'exitosa' ? 'success' : 'error';
+            $title = $_GET['edicion'] === 'exitosa' ? 'Edición exitosa' : 'Error al editar';
+            $text = $_GET['edicion'] === 'exitosa' ? 'El cliente fue actualizado correctamente.' : 'Ocurrió un error al actualizar el cliente.';
+        } elseif (isset($_GET['eliminacion'])) {
+            $icon = $_GET['eliminacion'] === 'exitosa' ? 'success' : 'error';
+            $title = $_GET['eliminacion'] === 'exitosa' ? 'Eliminación exitosa' : 'Error al eliminar';
+            $text = $_GET['eliminacion'] === 'exitosa' ? 'El cliente fue eliminado correctamente.' : 'Ocurrió un error al eliminar el cliente.';
+        }
+        ?>
+        Swal.fire({
+            icon: '<?= $icon ?>',
+            title: '<?= $title ?>',
+            text: '<?= $text ?>',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
+
 </body>
 
 </html>

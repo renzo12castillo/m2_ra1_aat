@@ -9,6 +9,7 @@
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/styles2.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100 background_page">
@@ -92,7 +93,6 @@
                             <tbody>
                                 <?php
                                 require_once("../procesos_crud/conexion.php");
-                                require_once("../procesos_crud/directores_crud.php");
                                 $sql = "SELECT * FROM directores";
                                 $ejecutar = mysqli_query($conexion, $sql);
 
@@ -107,7 +107,7 @@
                                                 <input type="hidden" name="txt_editar_director" value="<?= $resultado['director_id']; ?>">
                                                 <button type="submit" name="btn_editar_director" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                                             </form>
-                                            <form action="directores.php" method="post" style="display:inline;">
+                                            <form action="../procesos_crud/directores_crud.php" method="post" style="display:inline;">
                                                 <input type="hidden" name="txt_eliminar_director" id="txt_eliminar_director" value="<?= $resultado['director_id']; ?>">
                                                 <button type="submit" class="btn btn-danger" name="btn_eliminar_director" id="btn_eliminar_director"><i class="bi bi-trash3-fill"></i></button>
                                             </form>
@@ -127,6 +127,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+    <script src="../js/alertas_directores.js"></script>
 </body>
 
 </html>

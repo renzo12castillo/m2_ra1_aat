@@ -9,6 +9,7 @@
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/styles2.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100 background_page">
@@ -100,7 +101,6 @@
                             <tbody>
                                 <?php
                                 require_once("../procesos_crud/conexion.php");
-                                require_once("../procesos_crud/suscripciones_crud.php");
                                 $sql = "SELECT * FROM suscripciones";
                                 $ejecutar = mysqli_query($conexion, $sql);
 
@@ -117,7 +117,7 @@
                                                 <input type="hidden" name="txt_editar_suscripcion" value="<?= $resultado['suscripcion_id']; ?>">
                                                 <button type="submit" name="btn_editar_suscripcion" class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                                             </form>
-                                            <form action="suscripciones.php" method="post" style="display:inline;">
+                                            <form action="../procesos_crud/suscripciones_crud.php" method="post" style="display:inline;">
                                                 <input type="hidden" name="txt_eliminar_suscripcion" id="txt_eliminar_suscripcion" value="<?= $resultado['suscripcion_id']; ?>">
                                                 <button type="submit" class="btn btn-danger" name="btn_eliminar_suscripcion" id="btn_eliminar_suscripcion"><i class="bi bi-trash3-fill"></i></button>
                                             </form>
@@ -137,6 +137,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+    <script src="../js/alerta_suscripciones.js"></script>
+
+    <?php if (isset($_GET['edicion'])): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: '<?= $_GET['edicion'] === "exitosa" ? "success" : "error" ?>',
+            title: '<?= $_GET['edicion'] === "exitosa" ? "Edición exitosa" : "Error al editar" ?>',
+            text: '<?= $_GET['edicion'] === "exitosa" ? "La suscripción fue modificada correctamente." : "Ocurrió un problema al modificar la suscripción." ?>',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
+
 </body>
 
 </html>

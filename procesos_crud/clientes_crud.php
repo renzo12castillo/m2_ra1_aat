@@ -1,30 +1,42 @@
 <?php
+ob_start();
+require_once("conexion.php");
 
-    require_once("conexion.php");
+// === ELIMINAR CLIENTE ===
+if (isset($_POST['btn_eliminar'])) {
+    $id = intval($_POST['txt_eliminar_cliente']);
 
-    if (isset($_POST['btn_eliminar'])) {
-    $id = $_POST['txt_eliminar_cliente'];
-    $sql = "delete from clientes where cliente_id=" . $id;
+    if ($id > 0) {
+        $sql = "DELETE FROM clientes WHERE cliente_id = $id";
 
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        echo "Registro eliminado con exito";
-        echo "<br><a href ='../vistas/clientes.php'>Regresar</a>";
-    } catch (Exception $th) {
-        echo "Error al eliminar el registro" . $th;
+        try {
+            $ejecutar = mysqli_query($conexion, $sql);
+            if ($ejecutar) {
+                header("Location: ../vistas/clientes.php?eliminacion=exitosa");
+                exit;
+            } else {
+                header("Location: ../vistas/clientes.php?eliminacion=fallida");
+                exit;
+            }
+        } catch (Exception $e) {
+            header("Location: ../vistas/clientes.php?eliminacion=fallida");
+            exit;
+        }
+    } else {
+        header("Location: ../vistas/clientes.php?eliminacion=fallida");
+        exit;
     }
 }
 
-//EN ESTA PARTE SE AGREGA LA OPCION PARA EDITAR LA INFORMACION DE LOS CLIENTES//
-
+// === EDITAR CLIENTE ===
 if (isset($_POST['guardar_cambios'])) {
-    $id = $_POST['txt_id'];
-    $nombre = $_POST['txt_nombre'];
-    $apellido = $_POST['txt_apellido'];
-    $fechaNacimiento = $_POST['date_fecha_de_nacimiento'];
-    $fechaSuscripcion = $_POST['date_fecha_de_suscripcion'];
-    $correoElectronico = $_POST['email_correo_electronico'];
-    $telefonoMovil = $_POST['tel_telefono_movil'];
+    $id = intval($_POST['txt_id']);
+    $nombre = trim($_POST['txt_nombre']);
+    $apellido = trim($_POST['txt_apellido']);
+    $fechaNacimiento = trim($_POST['date_fecha_de_nacimiento']);
+    $fechaSuscripcion = trim($_POST['date_fecha_de_suscripcion']);
+    $correoElectronico = trim($_POST['email_correo_electronico']);
+    $telefonoMovil = trim($_POST['tel_telefono_movil']);
 
     $sql = "UPDATE clientes SET 
                 nombre = '$nombre', 
@@ -35,56 +47,61 @@ if (isset($_POST['guardar_cambios'])) {
                 telefono_movil = '$telefonoMovil'
             WHERE cliente_id = $id";
 
-    echo $sql;
+    try {
+        $ejecutar = mysqli_query($conexion, $sql);
+        if ($ejecutar) {
+            header("Location: ../vistas/clientes.php?edicion=exitosa");
+            exit;
+        } else {
+            header("Location: ../vistas/clientes.php?edicion=fallida");
+            exit;
+        }
+    } catch (Exception $e) {
+        header("Location: ../vistas/clientes.php?edicion=fallida");
+        exit;
+    }
+}
+
+// === AGREGAR NUEVO CLIENTE ===
+if (isset($_POST['btn_agregar_cliente'])) {
+    $id = intval($_POST['txt_id']);
+    $nombre = trim($_POST['txt_nombre']);
+    $apellido = trim($_POST['txt_apellido']);
+    $fechaNacimiento = trim($_POST['date_fecha_de_nacimiento']);
+    $fechaSuscripcion = trim($_POST['date_fecha_suscripcion']);
+    $correoElectronico = trim($_POST['email_correo_electronico']);
+    $telefonoMovil = trim($_POST['tel_movil']);
+
+    $sql = "INSERT INTO clientes (cliente_id, nombre, apellido, fecha_nacimiento, fecha_suscripcion, correo_electronico, telefono_movil) 
+            VALUES ($id, '$nombre', '$apellido', '$fechaNacimiento', '$fechaSuscripcion', '$correoElectronico', '$telefonoMovil')";
 
     try {
         $ejecutar = mysqli_query($conexion, $sql);
         if ($ejecutar) {
-            echo "<br>Datos Modificados con Éxito!";
-            echo "<br><a href ='../vistas/clientes.php'>Regresar</a>";
+            header("Location: ../vistas/clientes.php?registro=exito");
+            exit;
         } else {
-            echo "<br>Error en la consulta: " . mysqli_error($conexion);
+            header("Location: ../vistas/clientes.php?registro=error");
+            exit;
         }
     } catch (Exception $e) {
-        echo "No se puede modificar: " . $e;
-    }
-}
-
-
-//ACA SE AGREGARA EL PROCESO DE INSERCION DE NUEVOS CLIENTES// 
-
-if (isset($_POST['btn_agregar_cliente'])) {
-    $id = $_POST['txt_id'];
-    $nombre = $_POST['txt_nombre'];
-    $apellido = $_POST['txt_apellido'];
-    $fechaNacimiento = $_POST['date_fecha_de_nacimiento'];
-    $fechaSuscripcion = $_POST['date_fecha_suscripcion'];
-    $correoElectronico = $_POST['email_correo_electronico'];
-    $telefonoMovil = $_POST['tel_movil'];
-
-    echo "Datos del cliente: ";
-    echo "<br>ID:" . $id;
-    echo "<br>Nombre:" . $nombre;
-    echo "<br>Aplellido:" . $apellido;
-    echo "<br>Fecha de Nacimiento:" . $fechaNacimiento;
-    echo "<br>Fecha de Suscripcion:" . $fechaSuscripcion;
-    echo "<br>Correo Electronico:" . $correoElectronico;
-    echo "<br>Telefono Movil:" . $telefonoMovil;
-
-    $sql = "insert into clientes (cliente_id, nombre, apellido, fecha_nacimiento, fecha_suscripcion, correo_electronico, telefono_movil) 
-            values ('$id', '$nombre', '$apellido', '$fechaNacimiento', '$fechaSuscripcion', '$correoElectronico', '$telefonoMovil'
-);";
-
-
-    try {
-        $ejecutar = mysqli_query($conexion, $sql);
-        echo "<br>Los datos fueron almacenados con exito";
-        header('Location: ../vistas/clientes.php');
+        header("Location: ../vistas/clientes.php?registro=error");
         exit;
-    } catch (Exception $th) {
-        echo "<br>Datos no fueron guardados, intente nuevamente<br>" . $th;
     }
 }
-
-
+ob_end_flush();
 ?>
+
+<?php if ($mensaje): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: "<?= $mensaje === 'exito' ? '¡Éxito!' : 'Error' ?>",
+    text: "<?= $mensaje === 'exito' ? 'La suscripcion fue guardada correctamente.' : 'No se pudo guardar la suscripcion.' ?>",
+    icon: "<?= $mensaje === 'exito' ? 'success' : 'error' ?>",
+    confirmButtonText: "Aceptar"
+}).then(() => {
+    window.location.href = "../vistas/clientes.php";
+});
+</script>
+<?php endif; ?>
